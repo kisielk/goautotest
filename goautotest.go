@@ -47,6 +47,12 @@ func main() {
 	events := make(map[string]*fsnotify.FileEvent)
 	debounce := make(<-chan time.Time)
 	log.Println("started goautotest for", wd)
+
+	// Run an initial test on startup
+	if err := startGoTest(os.Args[1:]...); err != nil {
+		log.Println(err)
+	}
+
 	for {
 		select {
 		case ev := <-watcher.Event:
