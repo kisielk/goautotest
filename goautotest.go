@@ -46,6 +46,7 @@ func main() {
 
 	events := make(map[string]*fsnotify.FileEvent)
 	debounce := make(<-chan time.Time)
+	log.Println("started goautotest for", wd)
 	for {
 		select {
 		case ev := <-watcher.Event:
@@ -54,7 +55,7 @@ func main() {
 				name = ev.Name
 			}
 			events[name] = ev
-			debounce = time.After(500 * time.Millisecond)
+			debounce = time.After(2 * time.Second)
 		case err := <-watcher.Error:
 			log.Println("watcher error:", err)
 		case <-debounce:
